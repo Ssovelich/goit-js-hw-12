@@ -41,7 +41,7 @@ const onSearchImg = async event => {
    
   loadingEl.classList.add('is-visible');
 
-fetchPhotos((searchedValue, currentPage))
+fetchPhotos(searchedValue, currentPage)
     
     if (response.data.hits.length === 0) {
       iziToast.error({
@@ -56,7 +56,8 @@ fetchPhotos((searchedValue, currentPage))
       loadingEl.classList.remove('is-visible');
       galleryListEl.innerHTML = '';
       
-      searchFormEl.reset();
+        searchFormEl.reset();
+        return;
     };
       const gallaryCardsTemplate = response.data.hits.map(photoDetals => createGallery(photoDetals)).join('');
 
