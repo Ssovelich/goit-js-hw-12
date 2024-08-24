@@ -1,0 +1,129 @@
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.input {
+  padding: 0 0 0 16px;
+  border: 1px solid #808080;
+  border-radius: 4px;
+  width: 272px;
+  height: 38px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+.btn {
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 91px;
+  height: 40px;
+  cursor: pointer;
+  border: none;
+  background: #4e75ff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+.btn:hover {
+  background: #6c8cff;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+}
+.gallery-item {
+  border: 1px solid #808080;
+}
+.photo-info-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  gap: 32px;
+  padding: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.photo-info-list h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.33333;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+  margin: 0;
+}
+.photo-info-list p {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+  margin: 0;
+}
+.load-more-btn {
+  display: block;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 125px;
+  height: 40px;
+  background: #4e75ff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin-left: auto;
+  margin-right: auto;
+}
+.load-more-btn:hover {
+  background: #6c8cff;
+}
+.is-hidden {
+  display: none;
+}
+.loader {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: none;
+  margin: 15px auto;
+  position: relative;
+  background: #808080;
+  box-shadow: -24px 0 #808080, 24px 0 #808080;
+  box-sizing: border-box;
+  animation: shadowPulse 2s linear infinite;
+}
+.is-visible {
+  display: block;
+}
+
+@keyframes shadowPulse {
+  33% {
+    background: #b1b0b0;
+    box-shadow: -24px 0 #4e75ff, 24px 0 #b1b0b0;
+  }
+  66% {
+    background: #4e75ff;
+    box-shadow: -24px 0 #b1b0b0, 24px 0 #b1b0b0;
+  }
+  100% {
+    background: #b1b0b0;
+    box-shadow: -24px 0 #b1b0b0, 24px 0 #4e75ff;
+  }
+}
