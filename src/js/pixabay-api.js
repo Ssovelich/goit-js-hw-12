@@ -15,5 +15,5 @@ export const fetchPhotos = (searchedQuery, page) => {
         }
     };
 
-    return axios.get(`/api/`, axiosOptions);
+    return axios.get('/api/', axiosOptions);
 }; 

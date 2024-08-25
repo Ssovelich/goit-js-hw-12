@@ -18,6 +18,12 @@ let currentPage = 1;
 let searchedValue = '';
 let cardHeight = 0;
 
+const simpleBox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+      overlayOpacity: 0.8,
+    });
+
 const onSearchImg = async event => {
     try {
         event.preventDefault();
@@ -25,27 +31,23 @@ const onSearchImg = async event => {
         searchedValue = searchFormEl.elements.search_img.value.trim();
 
         currentPage = 1;
-        loadMoreBtnEl.classList.add('is-hidden');
-        
-        const response = await fetchPhotos(searchedValue, currentPage);
-      
+                        
         if (!searchedValue) {
-    iziToast.warning({
-      title: 'Warning',
-      message: 'Please fill the search field first.',
-      position: 'topRight',
-    }); 
-    searchFormEl.elements.search_img.value = '';
-    return;
-  }
-   
-  loadingEl.classList.add('is-visible');
-
-fetchPhotos(searchedValue, currentPage)
-    
+            iziToast.warning({
+                title: 'Warning',
+                message: 'Please fill the search field first.',
+                position: 'topRight',
+            }); 
+            return;
+        }
+        
+        loadingEl.classList.add('is-visible');
+        
+    const response = await fetchPhotos(searchedValue, currentPage);
     if (response.data.hits.length === 0) {
+      loadMoreBtnEl.classList.add('is-hidden');
       iziToast.error({
-        iconUrl: `${iconError}`,
+        iconUrl: iconError,
         message: 'Sorry, there are no images matching your search query. Please try again!',
         messageColor: 'white',
         position: 'topRight',
@@ -53,38 +55,39 @@ fetchPhotos(searchedValue, currentPage)
         maxWidth: '350px'
       });
 
-      loadingEl.classList.remove('is-visible');
-      galleryListEl.innerHTML = '';
+       galleryListEl.innerHTML = '';
       
-        searchFormEl.reset();
-        return;
+       return;
     };
-      const gallaryCardsTemplate = response.data.hits.map(photoDetals => createGallery(photoDetals)).join('');
+      const gallaryCardsTemplate = response.data.hits.map(createGallery).join('');
 
       galleryListEl.innerHTML = gallaryCardsTemplate;
         
       const galleryCardEl = galleryListEl.querySelector('li');
       cardHeight = galleryCardEl.getBoundingClientRect().height;
       
-      loadMoreBtnEl.classList.remove('is-hidden'); 
-    
-    const simpleBox = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-      overlayOpacity: 0.8,
-    });
+        if (response.data.totalHits > 15) {
+            loadMoreBtnEl.classList.remove('is-hidden');
+        }
+        
     simpleBox.refresh();
       
-    loadingEl.classList.remove('is-visible');
     searchFormEl.reset(); 
-  
-        
+          
     } catch(err) {
-        console.log(err);
+        iziToast.error({
+        iconUrl: iconError,
+        message: err.message,
+        messageColor: 'white',
+        position: 'topRight',
+        color: '#ef4040',
+        maxWidth: '350px'
+      });} finally {
+        loadingEl.classList.remove('is-visible');
     }
 };
 
-const onLoadMoreClick = async event => { 
+const onLoadMoreClick = async () => { 
     try {
         currentPage++;
 
@@ -96,22 +99,16 @@ const onLoadMoreClick = async event => {
         const gallaryCardsTemplate = response.data.hits.map(photoDetals => createGallery(photoDetals)).join('');
 
         galleryListEl.insertAdjacentHTML('beforeend', gallaryCardsTemplate);
-
-        const simpleBox = new SimpleLightbox('.gallery a', {
-            captionsData: 'alt',
-            captionDelay: 250,
-            overlayOpacity: 0.8,
-    });
+       
+        simpleBox.refresh();
 
         scrollBy({
             top: cardHeight*2,
             behavior: 'smooth'
-
         });
 
-        loadingEl.classList.remove('is-visible');
         loadMoreBtnEl.classList.remove('is-hidden'); 
-        if (currentPage === response.data.totalHits) {
+        if (currentPage === Math.ceil(response.data.totalHits/15)) {
             loadMoreBtnEl.classList.add('is-hidden');
             iziToast.warning({
                 title: 'Info',
@@ -120,7 +117,16 @@ const onLoadMoreClick = async event => {
     }); 
         };
     } catch(err) {
-        console.log(err);
+        iziToast.error({
+        iconUrl: iconError,
+        message: err.message,
+        messageColor: 'white',
+        position: 'topRight',
+        color: '#ef4040',
+        maxWidth: '350px'
+      });
+    } finally {
+        loadingEl.classList.remove('is-visible');
 }
 };
 
